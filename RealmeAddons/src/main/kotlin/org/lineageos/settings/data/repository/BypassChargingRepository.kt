@@ -32,7 +32,7 @@ class BypassChargingRepository(private val context: Context) {
 
     companion object {
         private const val BYPASS_CHARGING_NODE =
-            "/sys/devices/virtual/oplus_chg/battery/mmi_charging_enable"
+            "/sys/class/oplus_chg/battery/mmi_charging_enable"
 
         // Hardware logic is inverted: 0 = bypass enabled, 1 = normal charging
         private const val HARDWARE_BYPASS_ENABLE = "0"
