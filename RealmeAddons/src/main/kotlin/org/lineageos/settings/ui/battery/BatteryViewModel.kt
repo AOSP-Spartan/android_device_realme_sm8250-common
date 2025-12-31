@@ -37,6 +37,11 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
         .getBypassEnabledFlow()
         .asLiveData(viewModelScope.coroutineContext)
 
+    // Bypass threshold from DataStore (reactive)
+    val bypassThreshold: LiveData<Int> = repository
+        .getBypassThresholdFlow()
+        .asLiveData(viewModelScope.coroutineContext)
+
     // Charging state
     private val _isCharging = MutableLiveData<Boolean>()
     val isCharging: LiveData<Boolean> = _isCharging
@@ -90,6 +95,20 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
                 _uiState.value = UiState.Success
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    /**
+     * Set bypass charging threshold
+     * Called from UI (seekbar/slider)
+     */
+    fun setBypassThreshold(threshold: Int) {
+        viewModelScope.launch {
+            try {
+                repository.saveBypassThreshold(threshold)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error(e.message ?: "Failed to save threshold")
             }
         }
     }

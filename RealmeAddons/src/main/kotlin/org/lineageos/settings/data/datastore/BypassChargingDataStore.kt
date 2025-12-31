@@ -11,6 +11,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -28,6 +29,9 @@ class BypassChargingDataStore(private val context: Context) {
         )
 
         private val BYPASS_ENABLED_KEY = booleanPreferencesKey("bypass_charging_enabled")
+        private val BYPASS_THRESHOLD_KEY = intPreferencesKey("bypass_charging_threshold")
+
+        const val DEFAULT_THRESHOLD = 30
     }
 
     /**
@@ -54,5 +58,29 @@ class BypassChargingDataStore(private val context: Context) {
      */
     suspend fun getBypassEnabled(): Boolean {
         return context.dataStore.data.first()[BYPASS_ENABLED_KEY] ?: false
+    }
+
+    /**
+     * Flow of bypass charging threshold
+     */
+    val bypassThresholdFlow: Flow<Int> = context.dataStore.data
+        .map { preferences ->
+            preferences[BYPASS_THRESHOLD_KEY] ?: DEFAULT_THRESHOLD
+        }
+
+    /**
+     * Save bypass charging threshold
+     */
+    suspend fun setBypassThreshold(threshold: Int) {
+        context.dataStore.edit { preferences ->
+            preferences[BYPASS_THRESHOLD_KEY] = threshold
+        }
+    }
+
+    /**
+     * Get current bypass threshold (non-Flow)
+     */
+    suspend fun getBypassThreshold(): Int {
+        return context.dataStore.data.first()[BYPASS_THRESHOLD_KEY] ?: DEFAULT_THRESHOLD
     }
 }

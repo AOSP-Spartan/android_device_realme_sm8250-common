@@ -69,6 +69,27 @@ class BypassChargingRepository(private val context: Context) {
     }
 
     /**
+     * Get bypass threshold as Flow for reactive UI
+     */
+    fun getBypassThresholdFlow(): Flow<Int> {
+        return dataStore.bypassThresholdFlow
+    }
+
+    /**
+     * Get current bypass threshold from DataStore
+     */
+    suspend fun getBypassThreshold(): Int {
+        return dataStore.getBypassThreshold()
+    }
+
+    /**
+     * Save bypass threshold to DataStore
+     */
+    suspend fun saveBypassThreshold(threshold: Int) {
+        dataStore.setBypassThreshold(threshold)
+    }
+
+    /**
      * Apply bypass charging to hardware
      * This actually controls the charging circuit
      *
@@ -128,5 +149,15 @@ class BypassChargingRepository(private val context: Context) {
             plugged == BatteryManager.BATTERY_PLUGGED_USB ||
             plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS
         } ?: false
+    }
+
+    /**
+     * Check if battery level is sufficient for bypass charging
+     * Bypass only works when battery is at or above threshold
+     */
+    suspend fun canBypassCharge(): Boolean {
+        val batteryLevel = getBatteryLevel()
+        val threshold = getBypassThreshold()
+        return batteryLevel >= threshold
     }
 }

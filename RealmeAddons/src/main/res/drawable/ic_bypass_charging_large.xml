@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2025 The LineageOS Project
+
+ SPDX-License-Identifier: Apache-2.0
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+
+    <!-- Battery top nub -->
+    <path
+        android:fillColor="?android:attr/colorAccent"
+        android:pathData="M38,14 h20 a2,2 0 0,1 2,2 v4 h-24 v-4 a2,2 0 0,1 2,-2 z" />
+
+    <!-- Battery body outline -->
+    <path
+        android:strokeColor="?android:attr/colorAccent"
+        android:strokeWidth="3"
+        android:fillColor="#00000000"
+        android:pathData="M30,20 h36 a4,4 0 0,1 4,4 v52 a4,4 0 0,1 -4,4 h-36 a4,4 0 0,1 -4,-4 v-52 a4,4 0 0,1 4,-4 z" />
+
+    <!-- Left side - half filled (lighter) -->
+    <path
+        android:fillColor="?android:attr/colorAccent"
+        android:fillAlpha="0.25"
+        android:pathData="M30,24 h18 v48 h-18 a2,2 0 0,1 -2,-2 v-44 a2,2 0 0,1 2,-2 z" />
+
+    <!-- Right side - full (darker background) -->
+    <path
+        android:fillColor="?android:attr/colorAccent"
+        android:fillAlpha="0.5"
+        android:pathData="M48,24 h18 a2,2 0 0,1 2,2 v44 a2,2 0 0,1 -2,2 h-18 v-48 z" />
+
+    <!-- Vertical divider in middle -->
+    <path
+        android:strokeColor="?android:attr/colorAccent"
+        android:strokeWidth="2"
+        android:pathData="M48,24 v48" />
+
+    <!-- Check mark on right side -->
+    <path
+        android:strokeColor="?android:attr/colorAccent"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M52,48 l5,5 l10,-14" />
+
+</vector>

@@ -11,10 +11,13 @@
     <!-- Bypass Charging -->
     <string name="bypass_charging_title">Bypass Charging</string>
     <string name="bypass_charging_summary">Bypass battery when charging (powers device directly from charger)</string>
+    <string name="bypass_charging_description">When enabled, your device will be powered directly from the charger, bypassing the battery. This reduces heat generation and helps preserve battery health during extended gaming or intensive tasks.</string>
     <string name="bypass_charging_not_supported">Feature not supported on this device</string>
     <string name="bypass_charging_not_charging">Connect charger to enable</string>
     <string name="bypass_charging_active">Bypass charging active</string>
     <string name="bypass_charging_inactive">Bypass charging inactive</string>
+    <string name="bypass_charging_threshold_title">Charging Threshold</string>
+    <string name="bypass_charging_threshold_summary">Resume charging below the charging threshold</string>
 
     <!-- Tile service -->
     <string name="bypass_charging_tile_title">Bypass Charging</string>

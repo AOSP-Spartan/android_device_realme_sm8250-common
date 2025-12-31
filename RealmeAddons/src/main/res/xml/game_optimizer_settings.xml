@@ -6,10 +6,10 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreferenceCompat
-        android:key="bypass_charging"
+    <Preference
+        android:key="bypass_charging_page"
         android:title="@string/bypass_charging_title"
         android:summary="@string/bypass_charging_summary"
-        android:defaultValue="false" />
+        android:fragment="org.lineageos.settings.ui.battery.BypassChargingFragment" />
 
 </PreferenceScreen>
