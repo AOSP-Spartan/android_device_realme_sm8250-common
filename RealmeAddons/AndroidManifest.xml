@@ -36,19 +36,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Battery Settings Activity -->
-        <activity
-            android:name=".ui.battery.BatterySettingsActivity"
-            android:exported="true"
-            android:label="@string/bypass_charging_title">
-            <intent-filter>
-                <action android:name="com.android.settings.action.IA_SETTINGS" />
-            </intent-filter>
-            <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.battery" />
-        </activity>
-
         <!-- Game Optimizer Activity -->
         <activity
             android:name=".ui.game.GameOptimizerActivity"
