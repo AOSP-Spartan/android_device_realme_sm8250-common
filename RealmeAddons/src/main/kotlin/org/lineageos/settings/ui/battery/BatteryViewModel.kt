@@ -7,6 +7,7 @@
 package org.lineageos.settings.realme.ui.battery
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -31,6 +32,10 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
     // Feature support state
     private val _featureSupported = MutableLiveData<Boolean>()
     val featureSupported: LiveData<Boolean> = _featureSupported
+
+    companion object {
+        private const val TAG = "BatteryViewModel"
+    }
 
     // Bypass enabled state from DataStore (reactive)
     val bypassEnabled: LiveData<Boolean> = repository
@@ -61,6 +66,7 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
     private fun checkFeatureSupport() {
         val supported = repository.isSupported()
         _featureSupported.value = supported
+        Log.d(TAG, "Feature supported: $supported")
     }
 
     /**
@@ -68,7 +74,9 @@ class BatteryViewModel(application: Application) : AndroidViewModel(application)
      * Called from UI when battery broadcast is received
      */
     fun updateBatteryState() {
-        _isCharging.value = repository.isCharging()
+        val charging = repository.isCharging()
+        _isCharging.value = charging
+        Log.d(TAG, "updateBatteryState: charging=$charging")
     }
 
     /**

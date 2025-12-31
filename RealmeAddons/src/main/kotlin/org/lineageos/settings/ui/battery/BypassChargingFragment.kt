@@ -11,6 +11,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
@@ -33,9 +34,14 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
 
     private val powerReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d(TAG, "powerReceiver.onReceive: action=${intent?.action}")
             // Update battery state in ViewModel
             viewModel.updateBatteryState()
         }
+    }
+
+    companion object {
+        private const val TAG = "BypassChargingFragment"
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -95,13 +101,9 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
     private fun observeViewModel() {
         // Observe feature support
         viewModel.featureSupported.observe(this) { supported ->
-            bypassChargingPreference?.apply {
-                if (!supported) {
-                    isEnabled = false
-                    summary = getString(R.string.bypass_charging_not_supported)
-                }
-            }
             thresholdPreference?.isEnabled = supported
+            // Update preference state when feature support changes
+            updatePreferenceState()
         }
 
         // Observe bypass enabled state
@@ -116,7 +118,8 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
 
         // Observe charging state
         viewModel.isCharging.observe(this) { charging ->
-            updatePreferenceState(charging)
+            // Update preference state when charging state changes
+            updatePreferenceState()
         }
 
         // Observe UI state for errors
@@ -133,12 +136,15 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
     }
 
     /**
-     * Update preference enabled state based on charging
+     * Update preference enabled state based on feature support and charging state
      */
-    private fun updatePreferenceState(charging: Boolean) {
+    private fun updatePreferenceState() {
         bypassChargingPreference?.apply {
             val supported = viewModel.featureSupported.value ?: false
+            val charging = viewModel.isCharging.value ?: false
             val currentEnabled = viewModel.bypassEnabled.value ?: false
+
+            Log.d(TAG, "updatePreferenceState: supported=$supported, charging=$charging, enabled=$currentEnabled")
 
             // Enable toggle only when supported and charging
             isEnabled = supported && charging
@@ -180,6 +186,7 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
                 }
                 ctx.registerReceiver(powerReceiver, filter)
                 receiverRegistered = true
+                Log.d(TAG, "Power receiver registered")
             }
         }
     }
