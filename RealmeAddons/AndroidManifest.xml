@@ -56,6 +56,12 @@
                 android:resource="@string/game_optimizer_summary" />
         </activity>
 
+        <!-- Bypass Charging Activity -->
+        <activity
+            android:name=".ui.battery.BypassChargingActivity"
+            android:exported="false"
+            android:label="@string/bypass_charging_title" />
+
         <!-- Bypass Charging Service -->
         <service
             android:name=".service.BypassChargingService"
