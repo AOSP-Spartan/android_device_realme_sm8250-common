@@ -1,0 +1,39 @@
+//
+// Copyright (C) 2025 The LineageOS Project
+//
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app {
+    name: "RealmeAddons",
+
+    srcs: ["src/main/kotlin/**/*.kt"],
+    resource_dirs: ["src/main/res"],
+
+    certificate: "platform",
+    platform_apis: true,
+    system_ext_specific: true,
+    privileged: true,
+
+    static_libs: [
+        "androidx.core_core-ktx",
+        "androidx.appcompat_appcompat",
+        "androidx.lifecycle_lifecycle-livedata",
+        "androidx.lifecycle_lifecycle-viewmodel",
+        "androidx.lifecycle_lifecycle-runtime",
+        "androidx.lifecycle_lifecycle-common-java8",
+        "androidx-constraintlayout_constraintlayout",
+        "androidx.preference_preference",
+        "androidx.fragment_fragment-ktx",
+        "kotlinx-coroutines-android",
+        "kotlinx-coroutines-core",
+        "androidx.datastore_datastore-preferences",
+        "SettingsLibCollapsingToolbarBaseActivity",
+        "SettingsLibSettingsTheme",
+    ],
+
+    optimize: {
+        enabled: true,
+        proguard_flags_files: ["proguard-rules.pro"],
+    },
+}

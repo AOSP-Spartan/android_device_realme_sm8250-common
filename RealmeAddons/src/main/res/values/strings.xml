@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2025 The LineageOS Project
+
+ SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- App name -->
+    <string name="app_name">Realme Addons</string>
+
+    <!-- Bypass Charging -->
+    <string name="bypass_charging_title">Bypass Charging</string>
+    <string name="bypass_charging_summary">Bypass battery when charging (powers device directly from charger)</string>
+    <string name="bypass_charging_not_supported">Feature not supported on this device</string>
+    <string name="bypass_charging_not_charging">Connect charger to enable</string>
+    <string name="bypass_charging_active">Bypass charging active</string>
+    <string name="bypass_charging_inactive">Bypass charging inactive</string>
+
+    <!-- Tile service -->
+    <string name="bypass_charging_tile_title">Bypass Charging</string>
+    <string name="bypass_charging_active_with_level">Active - %d%%</string>
+    <string name="bypass_charging_inactive_with_level">Inactive - %d%%</string>
+
+    <!-- Notification -->
+    <string name="bypass_charging_channel_name">Bypass Charging Service</string>
+    <string name="bypass_charging_channel_description">Manages bypass charging functionality</string>
+</resources>
