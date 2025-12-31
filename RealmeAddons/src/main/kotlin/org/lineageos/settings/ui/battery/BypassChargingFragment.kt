@@ -53,18 +53,25 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
         bypassChargingPreference = findPreference<SwitchPreferenceCompat>("bypass_charging")?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 val enabled = newValue as Boolean
+
+                // Save state via ViewModel
                 viewModel.setBypassEnabled(enabled)
 
-                // Start/stop service based on state
+                // Manage service lifecycle
                 context?.let { ctx ->
                     val serviceIntent = Intent(ctx, BypassChargingService::class.java)
                     if (enabled) {
+                        // Start service when bypass is enabled
                         ctx.startService(serviceIntent)
                     } else {
+                        // Stop service when bypass is disabled
                         ctx.stopService(serviceIntent)
                     }
                 }
-                true
+
+                // Return false to prevent automatic UI update (we'll update via LiveData)
+                // This prevents race conditions between manual toggle and LiveData observer
+                false
             }
         }
     }
@@ -131,8 +138,16 @@ class BypassChargingFragment : SettingsBasePreferenceFragment() {
     private fun updatePreferenceState(charging: Boolean) {
         bypassChargingPreference?.apply {
             val supported = viewModel.featureSupported.value ?: false
+            val currentEnabled = viewModel.bypassEnabled.value ?: false
+
+            // Enable toggle only when supported and charging
             isEnabled = supported && charging
 
+            // Explicitly restore checked state to prevent UI glitches
+            // This is important when toggle is re-enabled after being disabled
+            isChecked = currentEnabled
+
+            // Update summary based on state
             summary = when {
                 !supported -> getString(R.string.bypass_charging_not_supported)
                 !charging -> getString(R.string.bypass_charging_not_charging)
