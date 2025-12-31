@@ -4,12 +4,23 @@
 
  SPDX-License-Identifier: Apache-2.0
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        android:key="bypass_charging_page"
-        android:title="@string/bypass_charging_title"
-        android:summary="@string/bypass_charging_summary"
-        android:fragment="org.lineageos.settings.realme.ui.battery.BypassChargingFragment" />
+    <com.android.settingslib.widget.LayoutPreference
+        android:key="game_optimizer_header"
+        android:layout="@layout/game_optimizer_header"
+        android:selectable="false" />
+
+    <PreferenceCategory
+        android:title="@string/game_optimizer_title">
+
+        <Preference
+            android:key="bypass_charging_page"
+            android:title="@string/bypass_charging_title"
+            android:summary="@string/bypass_charging_summary"
+            android:fragment="org.lineageos.settings.realme.ui.battery.BypassChargingFragment" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

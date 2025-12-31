@@ -31,4 +31,5 @@
     <!-- Game Optimizer -->
     <string name="game_optimizer_title">Game Optimizer</string>
     <string name="game_optimizer_summary">Optimize gaming performance and settings</string>
+    <string name="game_optimizer_description">Enhance your gaming experience with optimized performance settings and battery management features designed for extended gaming sessions.</string>
 </resources>
