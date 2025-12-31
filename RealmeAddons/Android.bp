@@ -18,6 +18,7 @@ android_app {
     static_libs: [
         "androidx.core_core-ktx",
         "androidx.appcompat_appcompat",
+        "androidx.lifecycle_lifecycle-service",
         "androidx.lifecycle_lifecycle-livedata",
         "androidx.lifecycle_lifecycle-viewmodel",
         "androidx.lifecycle_lifecycle-runtime",
