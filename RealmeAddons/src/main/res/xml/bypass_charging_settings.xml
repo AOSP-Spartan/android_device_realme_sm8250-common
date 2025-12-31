@@ -7,7 +7,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.android.settingslib.widget.LayoutPreference
+    <Preference
         android:key="bypass_charging_header"
         android:layout="@layout/bypass_charging_header"
         android:selectable="false" />
