@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.service
+package org.lineageos.settings.realme.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.lineageos.settings.data.repository.BypassChargingRepository
+import org.lineageos.settings.realme.data.repository.BypassChargingRepository
 
 /**
  * Broadcast receiver for boot completed events

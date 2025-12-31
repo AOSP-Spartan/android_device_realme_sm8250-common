@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.service
+package org.lineageos.settings.realme.service
 
 import android.content.Intent
 import android.service.quicksettings.Tile
@@ -16,8 +16,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.lineageos.settings.R
-import org.lineageos.settings.data.repository.BypassChargingRepository
+import org.lineageos.settings.realme.R
+import org.lineageos.settings.realme.data.repository.BypassChargingRepository
 
 /**
  * Quick Settings Tile for bypass charging

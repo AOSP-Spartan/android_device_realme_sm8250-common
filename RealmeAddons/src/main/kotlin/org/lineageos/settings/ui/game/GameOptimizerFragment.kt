@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.ui.game
+package org.lineageos.settings.realme.ui.game
 
 import android.os.Bundle
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
-import org.lineageos.settings.R
+import org.lineageos.settings.realme.R
 
 class GameOptimizerFragment : SettingsBasePreferenceFragment() {
 

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.ui.battery
+package org.lineageos.settings.realme.ui.battery
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.lineageos.settings.data.repository.BypassChargingRepository
+import org.lineageos.settings.realme.data.repository.BypassChargingRepository
 
 /**
  * ViewModel for battery settings screen

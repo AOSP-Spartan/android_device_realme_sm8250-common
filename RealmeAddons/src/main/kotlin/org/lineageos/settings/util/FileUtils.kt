@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.util
+package org.lineageos.settings.realme.util
 
 import android.util.Log
 import java.io.File

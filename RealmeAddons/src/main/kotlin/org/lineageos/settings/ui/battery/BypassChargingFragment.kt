@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.ui.battery
+package org.lineageos.settings.realme.ui.battery
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -16,8 +16,8 @@ import androidx.fragment.app.viewModels
 import androidx.preference.ListPreference
 import androidx.preference.SwitchPreferenceCompat
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
-import org.lineageos.settings.R
-import org.lineageos.settings.service.BypassChargingService
+import org.lineageos.settings.realme.R
+import org.lineageos.settings.realme.service.BypassChargingService
 
 /**
  * Fragment for bypass charging settings

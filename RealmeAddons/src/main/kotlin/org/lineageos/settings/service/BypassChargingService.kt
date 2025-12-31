@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.service
+package org.lineageos.settings.realme.service
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -20,8 +20,8 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import org.lineageos.settings.R
-import org.lineageos.settings.data.repository.BypassChargingRepository
+import org.lineageos.settings.realme.R
+import org.lineageos.settings.realme.data.repository.BypassChargingRepository
 
 /**
  * Service to manage bypass charging state

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.data.datastore
+package org.lineageos.settings.realme.data.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

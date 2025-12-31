@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.data.repository
+package org.lineageos.settings.realme.data.repository
 
 import android.content.Context
 import android.content.Intent
@@ -13,8 +13,8 @@ import android.os.BatteryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import org.lineageos.settings.data.datastore.BypassChargingDataStore
-import org.lineageos.settings.util.FileUtils
+import org.lineageos.settings.realme.data.datastore.BypassChargingDataStore
+import org.lineageos.settings.realme.util.FileUtils
 
 /**
  * Repository for bypass charging
