@@ -24,4 +24,8 @@
     <!-- Notification -->
     <string name="bypass_charging_channel_name">Bypass Charging Service</string>
     <string name="bypass_charging_channel_description">Manages bypass charging functionality</string>
+
+    <!-- Game Optimizer -->
+    <string name="game_optimizer_title">Game Optimizer</string>
+    <string name="game_optimizer_summary">Optimize gaming performance and settings</string>
 </resources>
