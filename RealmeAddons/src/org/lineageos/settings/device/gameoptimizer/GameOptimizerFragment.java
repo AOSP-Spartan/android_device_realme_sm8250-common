@@ -20,18 +20,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
 
 import org.lineageos.settings.device.R;
 import org.lineageos.settings.device.battery.BypassChargingUtils;
 
 public class GameOptimizerFragment extends PreferenceFragmentCompat
-        implements OnPreferenceChangeListener {
+        implements OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String KEY_BYPASS_CHARGING = "bypass_charging";
 
@@ -69,6 +71,9 @@ public class GameOptimizerFragment extends PreferenceFragmentCompat
             getContext().registerReceiver(mPowerReceiver, filter);
             updateBypassChargingState();
         }
+        // Listen for SharedPreferences changes (e.g., from QS tile)
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -80,6 +85,17 @@ public class GameOptimizerFragment extends PreferenceFragmentCompat
             } catch (IllegalArgumentException e) {
                 // Receiver not registered, ignore
             }
+        }
+        PreferenceManager.getDefaultSharedPreferences(getContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (KEY_BYPASS_CHARGING.equals(key) && mBypassChargingPreference != null) {
+            // Update preference UI when QS tile changes the value
+            boolean enabled = sharedPreferences.getBoolean(KEY_BYPASS_CHARGING, false);
+            mBypassChargingPreference.setChecked(enabled);
         }
     }
 
@@ -100,7 +116,11 @@ public class GameOptimizerFragment extends PreferenceFragmentCompat
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (KEY_BYPASS_CHARGING.equals(preference.getKey())) {
             boolean enabled = (Boolean) newValue;
-            return BypassChargingUtils.setEnabled(enabled);
+            if (BypassChargingUtils.setEnabled(enabled)) {
+                // Preference automatically saves to SharedPreferences
+                return true;
+            }
+            return false;
         }
         return false;
     }

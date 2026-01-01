@@ -72,7 +72,10 @@ public class BypassChargingUtils {
     }
 
     /**
-     * Check if device is currently charging
+     * Check if device has power source connected (charger plugged in)
+     * This checks for power connection, not battery charging status
+     * Important: When bypass charging is active, battery won't be charging
+     * but we still want to allow toggling as long as charger is connected
      */
     public static boolean isCharging(Context context) {
         if (context == null) {
@@ -86,8 +89,12 @@ public class BypassChargingUtils {
             return false;
         }
 
-        int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        return status == BatteryManager.BATTERY_STATUS_CHARGING ||
-               status == BatteryManager.BATTERY_STATUS_FULL;
+        // Check if power source is connected (AC or USB)
+        int plugged = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
+        boolean isPowerConnected = plugged == BatteryManager.BATTERY_PLUGGED_AC ||
+                                   plugged == BatteryManager.BATTERY_PLUGGED_USB ||
+                                   plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
+
+        return isPowerConnected;
     }
 }

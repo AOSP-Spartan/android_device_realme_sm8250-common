@@ -19,18 +19,36 @@ package org.lineageos.settings.device.battery;
 import android.content.SharedPreferences;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
+
 import androidx.preference.PreferenceManager;
 
-import org.lineageos.settings.device.R;
-
-public class BypassChargingTileService extends TileService {
+public class BypassChargingTileService extends TileService
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String BYPASS_CHARGING_KEY = "bypass_charging";
+    private SharedPreferences mPrefs;
 
     @Override
     public void onStartListening() {
         super.onStartListening();
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mPrefs.registerOnSharedPreferenceChangeListener(this);
         updateTile();
+    }
+
+    @Override
+    public void onStopListening() {
+        super.onStopListening();
+        if (mPrefs != null) {
+            mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (BYPASS_CHARGING_KEY.equals(key)) {
+            updateTile();
+        }
     }
 
     @Override
@@ -73,7 +91,10 @@ public class BypassChargingTileService extends TileService {
             // Disable tile when not charging
             tile.setState(Tile.STATE_UNAVAILABLE);
         } else {
-            boolean enabled = BypassChargingUtils.isCurrentlyEnabled();
+            // Read from SharedPreferences for consistency with UI
+            boolean enabled = mPrefs != null ?
+                    mPrefs.getBoolean(BYPASS_CHARGING_KEY, false) :
+                    BypassChargingUtils.isCurrentlyEnabled();
             tile.setState(enabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
         }
 
