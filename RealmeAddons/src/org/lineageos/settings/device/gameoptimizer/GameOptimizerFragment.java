@@ -25,14 +25,15 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 import androidx.preference.Preference.OnPreferenceChangeListener;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreferenceCompat;
+
+import com.android.settingslib.widget.SettingsBasePreferenceFragment;
 
 import org.lineageos.settings.device.R;
 import org.lineageos.settings.device.battery.BypassChargingUtils;
 
-public class GameOptimizerFragment extends PreferenceFragmentCompat
+public class GameOptimizerFragment extends SettingsBasePreferenceFragment
         implements OnPreferenceChangeListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String KEY_BYPASS_CHARGING = "bypass_charging";
