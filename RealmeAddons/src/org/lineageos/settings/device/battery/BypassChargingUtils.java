@@ -17,45 +17,40 @@
 package org.lineageos.settings.device.battery;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import androidx.preference.PreferenceManager;
 
-import org.lineageos.settings.device.utils.FileUtils;
-
+/**
+ * Helper class for bypass charging
+ * Delegates to BypassChargingController
+ */
 public class BypassChargingUtils {
-
-    private static final String BYPASS_CHARGING_NODE = "/sys/devices/virtual/oplus_chg/battery/mmi_charging_enable";
-
-    private static final String BYPASS_CHARGING_KEY = "bypass_charging";
 
     /**
      * Check if bypass charging is supported on this device
      */
     public static boolean isSupported() {
-        return FileUtils.fileExists(BYPASS_CHARGING_NODE);
+        return BypassChargingController.isSupported();
     }
 
     /**
      * Enable or disable bypass charging
-     * When enabled (true), normal charging is active
-     * When disabled (false), device runs on direct current, battery bypassed
      */
-    public static boolean setEnabled(boolean enabled) {
-        // Note: The node works inverted - 1 = charging ON, 0 = bypass (charging OFF)
-        // So we write the opposite of what user expects
-        return FileUtils.writeLine(BYPASS_CHARGING_NODE, enabled ? "0" : "1");
+    public static boolean setEnabled(Context context, boolean enabled) {
+        BypassChargingController controller = BypassChargingController.getInstance(context);
+        return enabled ? controller.enableBypassCharging() : controller.disableBypassCharging();
     }
 
     /**
-     * Get current bypass charging state from sysfs
+     * Get current bypass charging state
      */
-    public static boolean isCurrentlyEnabled() {
-        String value = FileUtils.readOneLine(BYPASS_CHARGING_NODE);
-        // 0 = bypass active (charging disabled), 1 = normal charging
-        return "0".equals(value);
+    public static boolean isCurrentlyEnabled(Context context) {
+        return BypassChargingController.getInstance(context).isBypassEnabled();
+    }
+
+    /**
+     * Check if power is currently connected
+     */
+    public static boolean isPowerConnected(Context context) {
+        return BypassChargingController.getInstance(context).isPowerConnected();
     }
 
     /**
@@ -65,36 +60,6 @@ public class BypassChargingUtils {
         if (!isSupported()) {
             return;
         }
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean enabled = prefs.getBoolean(BYPASS_CHARGING_KEY, false);
-        setEnabled(enabled);
-    }
-
-    /**
-     * Check if device has power source connected (charger plugged in)
-     * This checks for power connection, not battery charging status
-     * Important: When bypass charging is active, battery won't be charging
-     * but we still want to allow toggling as long as charger is connected
-     */
-    public static boolean isCharging(Context context) {
-        if (context == null) {
-            return false;
-        }
-
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = context.registerReceiver(null, ifilter);
-
-        if (batteryStatus == null) {
-            return false;
-        }
-
-        // Check if power source is connected (AC or USB)
-        int plugged = batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1);
-        boolean isPowerConnected = plugged == BatteryManager.BATTERY_PLUGGED_AC ||
-                                   plugged == BatteryManager.BATTERY_PLUGGED_USB ||
-                                   plugged == BatteryManager.BATTERY_PLUGGED_WIRELESS;
-
-        return isPowerConnected;
+        BypassChargingController.getInstance(context).restore();
     }
 }

@@ -16,39 +16,33 @@
 
 package org.lineageos.settings.device.battery;
 
-import android.content.SharedPreferences;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
-import androidx.preference.PreferenceManager;
-
 public class BypassChargingTileService extends TileService
-        implements SharedPreferences.OnSharedPreferenceChangeListener {
+        implements BypassChargingController.StateChangeListener {
 
-    private static final String BYPASS_CHARGING_KEY = "bypass_charging";
-    private SharedPreferences mPrefs;
+    private BypassChargingController mController;
 
     @Override
     public void onStartListening() {
         super.onStartListening();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        mPrefs.registerOnSharedPreferenceChangeListener(this);
+        mController = BypassChargingController.getInstance(this);
+        mController.registerListener(this);
         updateTile();
     }
 
     @Override
     public void onStopListening() {
         super.onStopListening();
-        if (mPrefs != null) {
-            mPrefs.unregisterOnSharedPreferenceChangeListener(this);
+        if (mController != null) {
+            mController.unregisterListener(this);
         }
     }
 
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (BYPASS_CHARGING_KEY.equals(key)) {
-            updateTile();
-        }
+    public void onStateChanged(boolean bypassEnabled, boolean powerConnected) {
+        updateTile();
     }
 
     @Override
@@ -61,22 +55,17 @@ public class BypassChargingTileService extends TileService
             return;
         }
 
-        if (!BypassChargingUtils.isCharging(this)) {
+        if (!mController.isPowerConnected()) {
             // Don't allow toggling when not charging
             updateTile();
             return;
         }
 
-        boolean currentState = BypassChargingUtils.isCurrentlyEnabled();
+        boolean currentState = mController.isBypassEnabled();
         boolean newState = !currentState;
 
-        if (BypassChargingUtils.setEnabled(newState)) {
-            // Save to preferences
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            prefs.edit().putBoolean(BYPASS_CHARGING_KEY, newState).apply();
-
-            updateTile();
-        }
+        BypassChargingUtils.setEnabled(this, newState);
+        updateTile();
     }
 
     private void updateTile() {
@@ -87,14 +76,11 @@ public class BypassChargingTileService extends TileService
 
         if (!BypassChargingUtils.isSupported()) {
             tile.setState(Tile.STATE_UNAVAILABLE);
-        } else if (!BypassChargingUtils.isCharging(this)) {
+        } else if (!mController.isPowerConnected()) {
             // Disable tile when not charging
             tile.setState(Tile.STATE_UNAVAILABLE);
         } else {
-            // Read from SharedPreferences for consistency with UI
-            boolean enabled = mPrefs != null ?
-                    mPrefs.getBoolean(BYPASS_CHARGING_KEY, false) :
-                    BypassChargingUtils.isCurrentlyEnabled();
+            boolean enabled = mController.isBypassEnabled();
             tile.setState(enabled ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
         }
 
